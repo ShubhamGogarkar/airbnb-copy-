@@ -1,0 +1,11 @@
+<div class="w-full max-w-sm">
+  <% if (typeof errorMessage !== 'undefined' && errorMessage && errorMessage.length > 0) { %>
+    <div class="bg-red-100 border border-red-300 text-red-600 px-4 py-3 rounded relative mb-4" role="alert">
+      <ul class="list-disc list-inside space-y-1">
+        <% errorMessage.forEach(error => { %>
+          <li><%= error %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+</div>
