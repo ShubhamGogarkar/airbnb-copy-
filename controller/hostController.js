@@ -1,4 +1,5 @@
 const Home = require('../models/home');
+const User = require('../models/user');
 
 
 
@@ -41,33 +42,45 @@ exports.getEditHome = (req, res, next) => {
  
 }
 
-exports.postAddHome = (req, res, next) => {
+exports.postAddHome = async (req, res, next) => {
 
   const {houseName, price, location, description} = req.body;
-   console.log(req.file);
+   console.log(req.body);
+   console.log(req.user);
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+   
    const image = req.file.path;
   const home = new Home({    houseName: houseName,
     description: description,
     price: price,
     location: location,
     image: image});
-  home.save().then(() => {
+  home.save().then((savedHome) => {
     console.log("home saved")
+    user.hostHomeIds.push(savedHome._id);
+    user.save().then(() => {
+      console.log("Home added to user's hostHomeIds");
+    }).catch(error => {
+      console.error("Failed to update user with new home:", error);
+    });
   });
   res.redirect('/host/host-home-list');
 }
 
 
-exports.getHostHome = (req, res, next) => {
-  Home.find().then((registeredHomes) => {
+exports.getHostHome = async (req, res, next) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId).populate('hostHomeIds');
+
   res.render('host/host-home-list', {
     pageTitle: 'Host Home List',
     currentPage: 'host-homes',
-    registeredHomes: registeredHomes,
+    registeredHomes: user.hostHomeIds,
     isLoggedIn: req.isLoggedIn || false,
     user: req.user
   });
- });
+ 
   
 } 
 
