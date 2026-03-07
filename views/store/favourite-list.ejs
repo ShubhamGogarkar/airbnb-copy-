@@ -18,9 +18,7 @@
      
         <p class="text-xl font-bold text-red-500">₹<%= home.price %></p>
          
-         <a class="mt-6 w-30 m-1 block text-center bg-blue-500 text-white py-3 rounded-lg text-base font-semibold hover:bg-blue-600 active:bg-blue-700 transition duration-300 shadow-md hover:shadow-lg" href="/homes/<%= home._id %>">View Details</a>
-
-          <form action="/favourites/delete/<%=home._id%>" method="POST" class="mt-2">
+         <a class="mt-6 w-30 m-1 block text-center bg-blue-500 text-white py-3 rounded-lg text-base font-semibold hover:bg-blue-600 active:bg-blue-700 transition duration-300 shadow-md hover:shadow-lg" href="/homes/<%= home._id %>">View Details</a>z="POST" class="mt-2">
             <button type="submit" class="w-30 m-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300">Remove</button>
           </form>
          
