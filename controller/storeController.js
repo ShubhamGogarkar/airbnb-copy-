@@ -57,6 +57,13 @@ exports.getBookings = (req, res, next) => {
 
 
 exports.postAddToFavourites = async (req, res, next) => {
+
+  if (!req.isLoggedIn) {
+    console.log("error", "Please log in to add to favourites.");
+    return res.redirect("/login");
+  }
+  else {
+
   const homeId = req.body.homeId;
   const userId = req.user._id;
   const user = await User.findById(userId);
@@ -67,10 +74,17 @@ exports.postAddToFavourites = async (req, res, next) => {
 
   }
   res.redirect("/favourites");
+  }
 };
 
 
 exports.getFavourites = async (req, res, next) => {
+
+  if (!req.isLoggedIn) {
+    console.log("error", "Please log in to view your favourites.");
+    res.redirect("/login");
+  } else {
+
   const userId = req.session.user._id;
    const user = await User.findById(userId).populate('favourites');
       res.render("store/favourite-list", {
@@ -80,6 +94,7 @@ exports.getFavourites = async (req, res, next) => {
     isLoggedIn: req.isLoggedIn || false,
     user: req.user
     });
+  }
 };
 
 
