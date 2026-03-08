@@ -38,6 +38,11 @@ const UserSchema = new mongoose.Schema({
     hostHomeIds: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Home'
+    }],
+
+    bookings: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Home'
     }]
 
 });

@@ -27,8 +27,11 @@ exports.getindex = (req, res, next) => {
   });
 };
 
-exports.getHomeDetails = (req, res, next) => {
-  homeId = req.params.homeId;
+exports.getHomeDetails =  async (req, res, next) => {
+const homeId = req.params.homeId;
+const userId = req.user._id;
+const user = await User.findById(userId);
+const isBooked = user.bookings.includes(homeId.toString());
   Home.findById(homeId).then((home) => {
   
     if (!home) {
@@ -39,6 +42,7 @@ else {
       pageTitle: "airBnB Home Details",
       currentPage: "home",
       home: home,
+      isBooked: isBooked,
     isLoggedIn: req.isLoggedIn || false,
     user: req.user
     });}
@@ -108,3 +112,45 @@ exports.postRemoveFromFavourites = async (req, res, next) => {
 
 };
 
+
+exports.getReservationProcess = (req, res, next) => {
+  res.render("store/reservation-process", {
+    pageTitle: "Reservation Process",
+    currentPage: "reservation-process",
+    isLoggedIn: req.isLoggedIn || false,
+    user: req.user,
+    homeId: req.params.homeId
+  });
+};
+
+exports.postBooking = async (req, res, next) => {
+  const homeId = req.params.homeId;
+  console.log("Booking home with ID:", homeId);
+  console.log("User making booking:", req.user);
+
+  const userId = req.session.user._id;
+  const user = await User.findById(userId);
+  const home = await Home.findById(homeId);
+  if (!home) {
+    console.log("error", "Home not found.");
+    return res.redirect("/homes");
+  }
+  user.bookings.push(homeId);
+  await user.save();
+  console.log("success", "Home booked successfully.");
+
+  res.redirect("/bookings");
+};
+
+exports.getBookings = async (req, res, next) => {
+  const userId = req.session.user._id;
+  const user = await User.findById(userId).populate('bookings');
+
+  res.render("store/bookings", {
+    pageTitle: "Bookings",
+    currentPage: "bookings",
+    bookedHomes: user.bookings,
+    isLoggedIn: req.isLoggedIn || false,
+    user: req.user
+  });
+};
