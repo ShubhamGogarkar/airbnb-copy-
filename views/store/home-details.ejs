@@ -57,14 +57,14 @@
                 <% if (!isBooked) { %>
               
                 <a href="/reserve/<%= home._id %>">
-                  <button type="submit" class="w-full px-6 py-3  from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+                  <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-md hover:shadow-lg">
                     Reserve Now
                   </button></a>
 
                   <% }  else { %>
 
                   <a href="/CancelBooking">
-                  <button type="submit" class="w-full px-6 py-3 from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+                  <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-md hover:shadow-lg">
                     Cancel Reservation
                   </button></a>
                   <% } %>
