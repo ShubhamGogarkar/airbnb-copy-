@@ -29,8 +29,13 @@ exports.getindex = (req, res, next) => {
 
 exports.getHomeDetails =  async (req, res, next) => {
 const homeId = req.params.homeId;
+if (!req.isLoggedIn) {
+  console.log("error", "Please log in to view home details.");
+  return res.redirect("/login");
+}
 const userId = req.user._id;
 const user = await User.findById(userId);
+
 const isBooked = user.bookings.includes(homeId.toString());
   Home.findById(homeId).then((home) => {
   
