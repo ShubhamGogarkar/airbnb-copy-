@@ -38,7 +38,12 @@
               <div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">About this property</h3>
                 <p class="text-gray-700 leading-relaxed text-lg"><%= home.description %></p>
-                
+                <% if (owner) { %>
+                <p class="text-gray-700 leading-relaxed text-lg">the owner is <%= owner.firstName %> <%= owner.lastName %></p>
+                <p class="text-gray-700 leading-relaxed text-lg"><%= owner.email %></p>
+                <% } else { %>
+                <p class="text-gray-700 leading-relaxed text-lg">Owner information not available</p>
+                <% } %>
               </div>
             </div>
           </div>
@@ -58,20 +63,18 @@
                 <% if (!isBooked) { %>
               
                 <a href="/reserve/<%= home._id %>">
-                  <button type="submit" class="w-full px-6 py-3 bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+                  <button type="submit" class="w-full m-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-md hover:shadow-lg">
                     Reserve Now
                   </button></a>
 
                   <% }  else { %>
 
                   <a href="/CancelBooking">
-                  <button type="submit" class="w-full px-6 py-3 bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+                  <button type="submit" class="w-full m-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition duration-300 shadow-md hover:shadow-lg">
                     Cancel Reservation
                   </button></a>
                   <% } %>
 
-                  <input type="hidden" name="homeId" value="<%= home._id %>">
-                </form>
                 <div class="w-full">
                   <%- include('../partials/favourite', { home: home }) %>
                 </div>

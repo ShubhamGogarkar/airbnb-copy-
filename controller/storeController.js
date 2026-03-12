@@ -37,8 +37,8 @@ const userId = req.user._id;
 const user = await User.findById(userId);
 
 const isBooked = user.bookings.includes(homeId.toString());
-  Home.findById(homeId).then((home) => {
-  
+  Home.findById(homeId).then(async (home) => {
+  const owner = await User.findById(home.ownerId);
     if (!home) {
       res.redirect("/homes");
     }  
@@ -48,6 +48,7 @@ else {
       currentPage: "home",
       home: home,
       isBooked: isBooked,
+      owner: owner,
     isLoggedIn: req.isLoggedIn || false,
     user: req.user
     });}

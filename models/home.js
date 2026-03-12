@@ -22,6 +22,11 @@ const homeSchema = new mongoose.Schema({
     image: {
         type: String,
       
+    },
+    ownerId: {
+        type: ObjectId,
+        required: true,
+        ref: 'User'
     }
 });
 

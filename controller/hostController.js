@@ -55,7 +55,9 @@ exports.postAddHome = async (req, res, next) => {
     description: description,
     price: price,
     location: location,
-    image: image});
+    image: image,
+    ownerId: userId
+  });
   home.save().then((savedHome) => {
     console.log("home saved")
     user.hostHomeIds.push(savedHome._id);
@@ -64,6 +66,8 @@ exports.postAddHome = async (req, res, next) => {
     }).catch(error => {
       console.error("Failed to update user with new home:", error);
     });
+
+
   });
   res.redirect('/host/host-home-list');
 }
