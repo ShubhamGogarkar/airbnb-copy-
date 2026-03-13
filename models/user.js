@@ -43,6 +43,10 @@ const UserSchema = new mongoose.Schema({
     bookings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Home'
+    }],
+
+    messages: [{
+        type: String,
     }]
 
 });

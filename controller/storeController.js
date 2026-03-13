@@ -133,10 +133,17 @@ exports.postBooking = async (req, res, next) => {
   const homeId = req.params.homeId;
   console.log("Booking home with ID:", homeId);
   console.log("User making booking:", req.user);
-
+  
   const userId = req.session.user._id;
   const user = await User.findById(userId);
   const home = await Home.findById(homeId);
+  const ownerId = home.ownerId.toString();
+  const owner = await User.findById(ownerId);
+
+  if (ownerId === userId.toString()) {
+    console.log("error", "You cannot book your own home.");
+    return res.redirect("/homes");
+  }
   if (!home) {
     console.log("error", "Home not found.");
     return res.redirect("/homes");
@@ -144,6 +151,9 @@ exports.postBooking = async (req, res, next) => {
   user.bookings.push(homeId);
   await user.save();
   console.log("success", "Home booked successfully.");
+  owner.messages.push(`Your home "${home.houseName}" has been booked by ${user.firstName} ${user.lastName}.`);
+  await owner.save();
+
 
   res.redirect("/bookings");
 };
