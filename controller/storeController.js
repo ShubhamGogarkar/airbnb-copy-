@@ -149,6 +149,7 @@ exports.postBooking = async (req, res, next) => {
     return res.redirect("/homes");
   }
   user.bookings.push(homeId);
+  user.messages.push(`You have successfully booked "${home.houseName}".`);
   await user.save();
   console.log("success", "Home booked successfully.");
   owner.messages.push(`Your home "${home.houseName}" has been booked by ${user.firstName} ${user.lastName}.`);
