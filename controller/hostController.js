@@ -66,8 +66,8 @@ exports.postAddHome = async (req, res, next) => {
     }).catch(error => {
       console.error("Failed to update user with new home:", error);
     });
-
-
+    user.messages.push(`Your home "${home.houseName}" has been successfully added.`);
+  
   });
   res.redirect('/host/host-home-list');
 }

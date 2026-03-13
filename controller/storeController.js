@@ -139,6 +139,8 @@ exports.postBooking = async (req, res, next) => {
   const home = await Home.findById(homeId);
   const ownerId = home.ownerId.toString();
   const owner = await User.findById(ownerId);
+  console.log("Home owner ID:", ownerId);
+  console.log(owner);
 
   if (ownerId === userId.toString()) {
     console.log("error", "You cannot book your own home.");
@@ -173,6 +175,9 @@ exports.getBookings = async (req, res, next) => {
 };
 
 exports.getMessages = async (req, res, next) => {
+  if (!req.isLoggedIn) {
+    return res.redirect("/login");
+  }
   const userId = req.session.user._id;
   const user = await User.findById(userId);
 
