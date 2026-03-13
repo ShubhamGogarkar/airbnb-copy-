@@ -170,3 +170,16 @@ exports.getBookings = async (req, res, next) => {
     user: req.user
   });
 };
+
+exports.getMessages = async (req, res, next) => {
+  const userId = req.session.user._id;
+  const user = await User.findById(userId);
+
+  res.render("store/messages", {
+    pageTitle: "Messages",
+    currentPage: "messages",
+    messages: user.messages,
+    isLoggedIn: req.isLoggedIn || false,
+    user: req.user
+  });
+};
