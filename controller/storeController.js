@@ -208,8 +208,8 @@ exports.postCancelBooking = async (req, res, next) => {
   home.isBooked = false;
   home.BookerId = null;
   await home.save();
-  user.bookings = user.bookings.filter(bookingId => bookingId.toString() !== homeId);
-  await user.save();
+  Booker.bookings = Booker.bookings.filter(bookingId => bookingId.toString() !== home._id.toString());
+  await Booker.save();
   if (owner._id.toString() === userId.toString()) {
     owner.messages.push(`You have cancelled the reservation for your home "${home.houseName}".`);
     Booker.messages.push(`The reservation for "${home.houseName}" has been cancelled by the owner.`);
@@ -218,7 +218,7 @@ exports.postCancelBooking = async (req, res, next) => {
     Booker.messages.push(`You have cancelled the reservation for "${home.houseName}".`);
   }
   await owner.save();
-    await user.save();
+    await Booker.save();
   res.redirect("/bookings");
 };
 
