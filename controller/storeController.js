@@ -136,16 +136,14 @@ exports.getReservationProcess = (req, res, next) => {
 
 exports.postBooking = async (req, res, next) => {
   const homeId = req.params.homeId;
-  console.log("Booking home with ID:", homeId);
-  console.log("User making booking:", req.user);
+ 
   
   const userId = req.session.user._id;
   const user = await User.findById(userId);
   const home = await Home.findById(homeId);
   const ownerId = home.ownerId.toString();
   const owner = await User.findById(ownerId);
-  console.log("Home owner ID:", ownerId);
-  console.log(owner);
+
 
   if (ownerId === userId.toString()) {
     console.log("error", "You cannot book your own home.");

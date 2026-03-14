@@ -45,8 +45,7 @@ exports.getEditHome = (req, res, next) => {
 exports.postAddHome = async (req, res, next) => {
 
   const {houseName, price, location, description} = req.body;
-   console.log(req.body);
-   console.log(req.user);
+
   const userId = req.user._id;
   const user = await User.findById(userId);
    
