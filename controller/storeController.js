@@ -35,10 +35,13 @@ if (!req.isLoggedIn) {
 }
 const userId = req.user._id;
 const user = await User.findById(userId);
+const home = await Home.findById(homeId);
 
-const isBooked = user.bookings.includes(homeId.toString());
+const isBooked = home.isBooked;
+const isBookedByUser = user.bookings.includes(homeId);
   Home.findById(homeId).then(async (home) => {
   const owner = await User.findById(home.ownerId);
+  const isOwner = owner._id.toString() === userId.toString();
     if (!home) {
       res.redirect("/homes");
     }  
@@ -48,7 +51,9 @@ else {
       currentPage: "home",
       home: home,
       isBooked: isBooked,
+      isBookedByUser: isBookedByUser,
       owner: owner,
+      isOwner: isOwner,
     isLoggedIn: req.isLoggedIn || false,
     user: req.user
     });}
@@ -152,6 +157,10 @@ exports.postBooking = async (req, res, next) => {
   }
   user.bookings.push(homeId);
   user.messages.push(`You have successfully booked "${home.houseName}".`);
+  home.isBooked = true;
+  home.BookerId = userId;
+
+  await home.save();
   await user.save();
   console.log("success", "Home booked successfully.");
   owner.messages.push(`Your home "${home.houseName}" has been booked by ${user.firstName} ${user.lastName}.`);
@@ -189,3 +198,30 @@ exports.getMessages = async (req, res, next) => {
     user: req.user
   });
 };
+
+exports.postCancelBooking = async (req, res, next) => {
+  const { homeId, BookerId } = req.body;
+  const userId = req.session.user._id;
+  const user = await User.findById(userId);
+  const home = await Home.findById(homeId);
+  const owner = await User.findById(home.ownerId);
+  const Booker = await User.findById(BookerId);
+ 
+  home.isBooked = false;
+  home.BookerId = null;
+  await home.save();
+  user.bookings = user.bookings.filter(bookingId => bookingId.toString() !== homeId);
+  await user.save();
+  if (owner._id.toString() === userId.toString()) {
+    owner.messages.push(`You have cancelled the reservation for your home "${home.houseName}".`);
+    Booker.messages.push(`The reservation for "${home.houseName}" has been cancelled by the owner.`);
+  } else {
+    owner.messages.push(`The reservation for your home "${home.houseName}" has been cancelled by the guest.`);
+    Booker.messages.push(`You have cancelled the reservation for "${home.houseName}".`);
+  }
+  await owner.save();
+    await user.save();
+  res.redirect("/bookings");
+};
+
+

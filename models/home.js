@@ -27,6 +27,14 @@ const homeSchema = new mongoose.Schema({
         type: ObjectId,
         required: true,
         ref: 'User'
+    },
+    isBooked: {
+        type: Boolean,
+        default: false
+    },
+    BookerId: {
+        type: ObjectId,
+        ref: 'User'
     }
 });
 

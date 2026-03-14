@@ -20,7 +20,7 @@ storeRouter.get("/reserve/:homeId", storeController.getReservationProcess);
 storeRouter.post("/bookings/:homeId", storeController.postBooking);
 storeRouter.get("/bookings/", storeController.getBookings);
 storeRouter.get("/messages", storeController.getMessages);
-
+storeRouter.post("/CancelBooking", storeController.postCancelBooking);
 
 storeRouter.get("/homes/:homeId", storeController.getHomeDetails);
 
