@@ -223,3 +223,10 @@ exports.postCancelBooking = async (req, res, next) => {
 };
 
 
+exports.postDeleteAllMessages = async (req, res, next) => {
+  const userId = req.session.user._id;
+  const user = await User.findById(userId);
+  user.messages = [];
+  await user.save();
+  res.redirect("/messages");
+};
